@@ -55,6 +55,7 @@ func (c Card) String() string {
 	return c.Rank.String() + " of " + c.Suit.String()
 }
 
+// Deck encapsulates a normal deck of cards and defines some operations on them.
 type Deck struct {
 	Cards []Card
 }

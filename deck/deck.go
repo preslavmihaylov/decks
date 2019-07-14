@@ -8,19 +8,8 @@ import (
 
 // Constants used to define boundaries for normal decks of cards
 const (
-	DefaultCardsInSuit = 13
-	DefaultDeckSize    = int(SuitsCnt) * DefaultCardsInSuit
+	DefaultDeckSize = int(SuitsCnt) * int(RanksCnt)
 )
-
-// Card represents a playing card from a deck of cards.
-// It contains a value and a suit. The value is represented as an integer,
-// where 1 stands for Ace, 11 for Jack, 12 for Queen, 13 for King.
-// It also contains a boolean flag denoting this card as a joker.
-type Card struct {
-	Value   int
-	Suit    CardSuit
-	IsJoker bool
-}
 
 // Option is a function alias used for constructing a functional-options constructor for a deck.
 type Option func([]Card) ([]Card, error)
@@ -44,9 +33,9 @@ func New(opts ...Option) ([]Card, error) {
 type Comparator func(cards []Card) func(i, j int) bool
 
 // Sort is a functional option for sorting the deck based on a user-defined comparator.
-func Sort(comparator Comparator) Option {
+func Sort(comp Comparator) Option {
 	return func(cards []Card) ([]Card, error) {
-		sort.Slice(cards, comparator(cards))
+		sort.Slice(cards, comp(cards))
 		return cards, nil
 	}
 }
@@ -61,7 +50,7 @@ func DefaultComparator(cards []Card) func(i, j int) bool {
 		}
 
 		if cards[i].Suit == cards[j].Suit {
-			return cards[i].Value < cards[j].Value
+			return cards[i].Rank < cards[j].Rank
 		}
 
 		return cards[i].Suit < cards[j].Suit
@@ -119,7 +108,7 @@ func Filter(filteredDecks ...[]Card) Option {
 		for _, fd := range filteredDecks {
 			for _, fc := range fd {
 				for i, c := range cards {
-					if c.Value == fc.Value && c.Suit == fc.Suit {
+					if c.Rank == fc.Rank && c.Suit == fc.Suit {
 						cards = append(cards[:i], cards[i+1:]...)
 						break
 					}
@@ -131,49 +120,49 @@ func Filter(filteredDecks ...[]Card) Option {
 	}
 }
 
-// Aces - all aces in a standard deck
-func Aces() []Card { return cardsWithValue(1) }
+// Aces in a standard deck
+func Aces() []Card { return cardsWithValue(Ace) }
 
-// Twos - all twos in a standard deck
-func Twos() []Card { return cardsWithValue(2) }
+// Twos in a standard deck
+func Twos() []Card { return cardsWithValue(Two) }
 
-// Threes - all threes in a standard deck
-func Threes() []Card { return cardsWithValue(3) }
+// Threes in a standard deck
+func Threes() []Card { return cardsWithValue(Three) }
 
-// Fours - all fours in a standard deck
-func Fours() []Card { return cardsWithValue(4) }
+// Fours in a standard deck
+func Fours() []Card { return cardsWithValue(Four) }
 
-// Fives - all fives in a standard deck
-func Fives() []Card { return cardsWithValue(5) }
+// Fives in a standard deck
+func Fives() []Card { return cardsWithValue(Five) }
 
-// Sixes - all sixes in a standard deck
-func Sixes() []Card { return cardsWithValue(6) }
+// Sixes in a standard deck
+func Sixes() []Card { return cardsWithValue(Six) }
 
-// Sevens - all sevens in a standard deck
-func Sevens() []Card { return cardsWithValue(7) }
+// Sevens in a standard deck
+func Sevens() []Card { return cardsWithValue(Seven) }
 
-// Eights - all eights in a standard deck
-func Eights() []Card { return cardsWithValue(8) }
+// Eights in a standard deck
+func Eights() []Card { return cardsWithValue(Eight) }
 
-// Nines - all nines in a standard deck
-func Nines() []Card { return cardsWithValue(9) }
+// Nines in a standard deck
+func Nines() []Card { return cardsWithValue(Nine) }
 
-// Tens - all tens in a standard deck
-func Tens() []Card { return cardsWithValue(10) }
+// Tens in a standard deck
+func Tens() []Card { return cardsWithValue(Ten) }
 
-// Jacks - all jacks in a standard deck
-func Jacks() []Card { return cardsWithValue(11) }
+// Jacks in a standard deck
+func Jacks() []Card { return cardsWithValue(Jack) }
 
-// Queens - all queens in a standard deck
-func Queens() []Card { return cardsWithValue(12) }
+// Queens in a standard deck
+func Queens() []Card { return cardsWithValue(Queen) }
 
-// Kings - all kings in a standard deck
-func Kings() []Card { return cardsWithValue(13) }
+// Kings in a standard deck
+func Kings() []Card { return cardsWithValue(King) }
 
-func cardsWithValue(v int) []Card {
+func cardsWithValue(r Rank) []Card {
 	cs := make([]Card, SuitsCnt)
-	for s := Clovers; s <= Spades; s++ {
-		cs[int(s)] = Card{v, s, false}
+	for s := Clovers; s < SuitsCnt; s++ {
+		cs[int(s)] = Card{r, s, false}
 	}
 
 	return cs
@@ -181,9 +170,10 @@ func cardsWithValue(v int) []Card {
 
 func defaultDeck() []Card {
 	cards := make([]Card, DefaultDeckSize)
-	for s := Clovers; s <= Spades; s++ {
-		for v := 0; v < DefaultCardsInSuit; v++ {
-			cards[int(s)*DefaultCardsInSuit+v] = Card{v + 1, s, false}
+	for s := Clovers; s < SuitsCnt; s++ {
+		for r := Ace; r < RanksCnt; r++ {
+			i := int(s)*int(RanksCnt) + int(r)
+			cards[i] = Card{r, s, false}
 		}
 	}
 

@@ -14,6 +14,6 @@ func main() {
 	}
 
 	for _, c := range cards {
-		fmt.Println("V:", c.Value, "S:", c.Suit, "J:", c.IsJoker)
+		fmt.Println(c.String())
 	}
 }

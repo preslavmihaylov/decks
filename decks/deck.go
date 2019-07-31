@@ -7,6 +7,11 @@ package decks
 // i.e. Clovers, Diamonds, etc...
 type Suit uint8
 
+const (
+	// DeckSize of a normal deck of cards.
+	DeckSize = int(SuitsCnt) * int(RanksCnt)
+)
+
 // Suits from a normal deck of cards
 const (
 	Clovers Suit = iota

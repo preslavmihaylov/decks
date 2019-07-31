@@ -6,11 +6,6 @@ import (
 	"time"
 )
 
-const (
-	// DefaultDeckSize of a normal deck of cards.
-	DefaultDeckSize = int(SuitsCnt) * int(RanksCnt)
-)
-
 // Comparator is used to sort a deck of cards based on a user-defined comparator.
 type Comparator func(deck *Deck) func(i, j int) bool
 
@@ -105,7 +100,7 @@ func Filter(filterFunc func(fc Card) bool) Option {
 
 func defaultDeck() *Deck {
 	deck := Deck{}
-	deck.Cards = make([]Card, DefaultDeckSize)
+	deck.Cards = make([]Card, DeckSize)
 	for s := Clovers; s < SuitsCnt; s++ {
 		for r := Ace; r < RanksCnt; r++ {
 			i := int(s)*int(RanksCnt) + int(r)

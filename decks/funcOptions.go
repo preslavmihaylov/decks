@@ -65,9 +65,7 @@ func Shuffle() Option {
 
 		deckSize := len(deck.Cards)
 		for i := 0; i < deckSize; i++ {
-			deck.mux.Lock()
 			pick := rand.Intn(len(deck.Cards))
-			deck.mux.Unlock()
 
 			shuffled = append(shuffled, deck.Cards[pick])
 			deck.Cards = append(deck.Cards[:pick], deck.Cards[pick+1:]...)

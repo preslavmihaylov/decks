@@ -3,7 +3,6 @@ package decks
 import (
 	"math/rand"
 	"sort"
-	"time"
 )
 
 // Comparator is used to sort a deck of cards based on a user-defined comparator.
@@ -61,18 +60,14 @@ func WithJokers(cnt int) Option {
 
 // Shuffle is a functional option for shuffling the deck in a random way.
 func Shuffle() Option {
-	return ShuffleWithSeed(time.Now().UnixNano())
-}
-
-// ShuffleWithSeed is a functional option for shuffling the deck based on a random seed.
-func ShuffleWithSeed(s int64) Option {
 	return func(deck *Deck) error {
 		var shuffled []Card
 
-		rand.Seed(s)
 		deckSize := len(deck.Cards)
 		for i := 0; i < deckSize; i++ {
+			deck.mux.Lock()
 			pick := rand.Intn(len(deck.Cards))
+			deck.mux.Unlock()
 
 			shuffled = append(shuffled, deck.Cards[pick])
 			deck.Cards = append(deck.Cards[:pick], deck.Cards[pick+1:]...)
@@ -81,6 +76,12 @@ func ShuffleWithSeed(s int64) Option {
 		deck.Cards = shuffled
 		return nil
 	}
+}
+
+// ShuffleWithSeed is a functional option for shuffling the deck based on a random seed.
+func ShuffleWithSeed(s int64) Option {
+	rand.Seed(s)
+	return Shuffle()
 }
 
 // Filter is a functional option for filtering given cards from the deck.

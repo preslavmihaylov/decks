@@ -3,6 +3,10 @@
 
 package decks
 
+import (
+	"sync"
+)
+
 // Suit from a normal deck of cards.
 // i.e. Clovers, Diamonds, etc...
 type Suit uint8
@@ -63,6 +67,7 @@ func (c Card) String() string {
 // Deck encapsulates a normal deck of cards and defines some operations on them.
 type Deck struct {
 	Cards []Card
+	mux   sync.Mutex
 }
 
 // Option is a function alias used for constructing a functional-options constructor for a deck.

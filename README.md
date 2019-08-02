@@ -11,10 +11,15 @@ go get github.com/preslavmihaylov/decks
 ```go
 // get a default, ordered deck of 52 cards
 d, err := decks.New()
-// handle error
+if err != nil {
+  // handle error
+}
+
+// Make sure you specify a random seed before shuffling the deck
+rand.Seed(time.Now().UnixNano())	
 
 // Shuffle deck of cards
-decks.Shuffle()
+d.Shuffle()
 
 // draw cards
 myHand := []decks.Card{}
@@ -30,7 +35,7 @@ for _, c := range myHand {
 d.InsertBottom(myHand)
 ```
 
-[Try it on The Go Playground](https://play.golang.org/p/0NS_9C5DlYU)
+[Try it on The Go Playground](https://play.golang.org/p/Jw9jvqQhtKc)
 
 ## Contributing
 Pull requests and feature requests are welcome. Feel free to submit a new issue and/or a PR.  

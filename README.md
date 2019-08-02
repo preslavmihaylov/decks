@@ -34,9 +34,9 @@ for _, c := range myHand {
 // discard hand
 d.InsertBottom(myHand)
 ```
-
 [Try it on The Go Playground](https://play.golang.org/p/Jw9jvqQhtKc)
 
+Check out the [full documentation](https://godoc.org/github.com/preslavmihaylov/decks)
 ## Contributing
 Pull requests and feature requests are welcome. Feel free to submit a new issue and/or a PR.  
 Make sure your Pull Request is well documented and reasoned.

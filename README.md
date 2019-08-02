@@ -31,3 +31,7 @@ d.InsertBottom(myHand)
 ```
 
 [Try it on The Go Playground](https://play.golang.org/p/0NS_9C5DlYU)
+
+## Contributing
+Pull requests and feature requests are welcome. Feel free to submit a new issue and/or a PR.  
+Make sure your Pull Request is well documented and reasoned.

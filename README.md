@@ -30,4 +30,4 @@ for _, c := range myHand {
 d.InsertBottom(myHand)
 ```
 
-[Try it on Go Playground](https://play.golang.org/p/0NS_9C5DlYU)
+[Try it on The Go Playground](https://play.golang.org/p/0NS_9C5DlYU)

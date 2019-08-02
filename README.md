@@ -8,15 +8,26 @@ go get github.com/preslavmihaylov/decks
 ```
 
 ## Quickstart
-```
-package main
+```go
+// get a default, ordered deck of 52 cards
+d, err := decks.New()
+// handle error
 
-import "github.com/preslavmihaylov/decks"
+// Shuffle deck of cards
+decks.Shuffle()
 
-func main() {
-  
+// draw cards
+myHand := []decks.Card{}
+myHand = append(myHand, d.Draw())
+myHand = append(myHand, d.Draw())
+
+// print hand
+for _, c := range myHand {
+  fmt.Println(c)
 }
 
+// discard hand
+d.InsertBottom(myHand)
 ```
 
 [Try it on Go Playground](https://play.golang.org/p/0NS_9C5DlYU)
